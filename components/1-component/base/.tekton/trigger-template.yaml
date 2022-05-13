@@ -1,0 +1,42 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  creationTimestamp: null
+  name: 1-component
+  namespace: beaumorley
+spec:
+  params:
+  - name: git-revision
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      annotations:
+        build.appstudio.openshift.io/application: purple-mermaid-app
+        build.appstudio.openshift.io/build: "true"
+        build.appstudio.openshift.io/component: 1-component
+        build.appstudio.openshift.io/type: build
+        build.appstudio.openshift.io/version: "0.1"
+        pipelines.appstudio.openshift.io/type: build
+      creationTimestamp: null
+      generateName: 1-component-
+      namespace: beaumorley
+    spec:
+      params:
+      - name: git-url
+        value: https://github.com/redhat-developer-demos/spring-petclinic
+      - name: output-image
+        value: quay.io/redhat-appstudio/user-workload:beaumorley-1-component-$(tt.params.git-revision)
+      pipelineRef:
+        bundle: quay.io/redhat-appstudio/build-templates-bundle:19cf17aa63a1c65eee897af8430dbb9c1682d77a
+        name: noop
+      workspaces:
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: appstudio
+        subPath: 1-component/$(tt.params.git-revision)
+      - name: registry-auth
+        secret:
+          secretName: redhat-appstudio-registry-pull-secret
+    status: {}
+status: {}
