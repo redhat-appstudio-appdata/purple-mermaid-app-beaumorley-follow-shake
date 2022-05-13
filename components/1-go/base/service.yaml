@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: 1-go
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: 1-go
+    app.kubernetes.io/part-of: purple-mermaid-app
+  name: 1-go
+  namespace: beaumorley
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/instance: 1-go
+status:
+  loadBalancer: {}

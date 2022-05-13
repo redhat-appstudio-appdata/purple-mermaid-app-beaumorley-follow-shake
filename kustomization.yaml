@@ -1,4 +1,5 @@
 bases:
 - components/1-component/base
+- components/1-go/base
 resources:
 - common-storage-pvc.yaml
